@@ -1,0 +1,8 @@
+		
+	FindIronSwordCaveRoom	
+EmptyCaveRoom	StartingRoom	EmptyCaveRoom
+	BanditCaveRoom	
+	CaveEscapeRoom	
+		
+		
+				
