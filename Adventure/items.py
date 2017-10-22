@@ -12,7 +12,7 @@ class Gold(Item):
     def __init__(self, amt):
         self.amt = amt
         super().__init__(name = "Gold",
-                        description = "Around Coin with {} stamed on the front." .format(str(self.amt)),
+                        description = "A round Coin with {} stamped on the front." .format(str(self.amt)),
                         value = self.amt)
 
 class Weapon(Item):
@@ -33,6 +33,6 @@ class Dagger(Weapon):
 class Iron_Sword(Weapon):
     def __init__(self):
         super().__init__(name = "Iron Sword",
-                        description = "A used iron sword, it looks very used",
+                        description = "A used iron sword, it looks very worn",
                         value = 25,
                         damage = 30)

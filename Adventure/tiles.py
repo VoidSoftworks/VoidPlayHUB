@@ -39,7 +39,7 @@ class StartingRoom(MapTile):
         you can make out four paths, each equally as dark and foreboding.
         """
 
-    def modify_player(self, player):
+    def modify_player(self, the_player):
         #Room has no action on player
         pass
 
@@ -48,8 +48,11 @@ class LootRoom(MapTile):
         self.item = item
         super().__init__(x, y)
 
-    def add_loot(self, player):
-        self.add_loot(player)
+    def add_loot(self, the_player):
+        the_player.inventory.append(self.item)
+
+    def modify_player(self, the_player):
+        self.add_loot(the_player)
 
 class EnemyRoom(MapTile):
     def __init__(self, x, y, enemy):
@@ -60,6 +63,12 @@ class EnemyRoom(MapTile):
         if self.enemy.is_alive():
             the_player.hp = the_player.hp - self.enemy.damage
             print("The {} does {} damage. you have {} HP remaining." .format(self.enemy.name, self.enemy.damage, the_player.hp))
+
+    def available_actions(self):
+        if self.enemy.is_alive():
+            return[actions.Attack(enemy=self.enemy)]
+        else:
+            return self.adjacent_moves()
 
 class BanditCaveRoom(EnemyRoom):
     def __init__(self, x, y):
@@ -85,24 +94,32 @@ class FindIronSwordCaveRoom(LootRoom):
         It's an iron sword, this could come in handy in such a dangerous place.
         """
 
-
 class EmptyCaveRoom(MapTile):
     def intro_text(self):
         return """
         It doesn't seem like anything is in this part of the cave, you must press on.
         """
 
-    def modify_player(self, player):
+    def modify_player(self, the_player):
         #room has no action on player
         pass
 
 class CaveEscapeRoom(MapTile):
     def intro_text(self):
         return """
-        As you find the exit to the cave. Its is a old wooden door. As you swing it open light floods the cave room you are in.
+        You find the exit to the cave. It is a old wooden door. As you swing it open light floods the cave room.
         Blinking sharply your eyes adjust to see a mountain vista, it looks like a town is nestled at the base of the range.
         You move forward into this world of ADVENTURE!
         """
 
     def modify_player(self, player):
-        player.victory = True
+        player.outofcave = True
+
+class OpenField(MapTile):
+    def intro_text(self):
+        return """
+        You can see a town to the north.
+        """
+
+    def modify_player(self, player):
+        pass

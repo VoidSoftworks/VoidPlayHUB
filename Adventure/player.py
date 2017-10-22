@@ -1,14 +1,20 @@
-import items
+import items, world
 
 class Player():
     def __init__(self):
         self.inventory = [items.Gold(15), items.Dagger()]
         self.hp = 100
         self.location_x, self.location_y = world.starting_position
+        self.outofcave = False
         self.victory = False
 
     def is_alive(self):
         return self.hp > 0
+
+    def do_action(self, action, **kwargs):
+        action_method = getattr(self, action.method.__name__)
+        if action_method:
+            action_method(**kwargs)
 
     def print_inventory(self):
         for item in self.inventory:
@@ -46,8 +52,3 @@ class Player():
             print("You killed {}!" .format(enemy.name))
         else:
             print("{} HP is {}." .format(enemy.name, enemy.hp))
-
-    def do_action(self, action, **kwargs):
-        action_method = getattr(self, action.method.__name__)
-        if action_method:
-            action_method(**kwargs)
